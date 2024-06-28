@@ -210,22 +210,22 @@ def main():
     bloxy_not_tagged = []
     for address in addresses[0:1000]:
         not_found_add=etherscan(result_collection,address)
-    #     if not_found_add:
-    #         if len(ether_not_tagged) <20:
-    #             ether_not_tagged.append(not_found_add)
-    #         else:
-    #             tagged,untagged=oklink(result_collection,not_found_add,chain="eth")
-    #             ether_not_tagged=[]
-    #             oklink_not_tagged.append(untagged)
-    #             if oklink_not_tagged:
-    #                 ethtective_untagged = scrape_ethtective(address,result_collection)
-    #                 ethtective_not_tagged.append(ethtective_untagged)
-    #                 oklink_not_tagged=[]
-    #                 if ethtective_not_tagged:
-    #                     bloxy_untagged = bloxy(ethtective_not_tagged,result_collection)
-    #                     bloxy_not_tagged.append(bloxy_untagged)
+        if not_found_add:
+            if len(ether_not_tagged) <20:
+                ether_not_tagged.append(not_found_add)
+            else:
+                tagged,untagged=oklink(result_collection,not_found_add,chain="eth")
+                ether_not_tagged=[]
+                oklink_not_tagged.append(untagged)
+                if oklink_not_tagged:
+                    ethtective_untagged = scrape_ethtective(address,result_collection)
+                    ethtective_not_tagged.append(ethtective_untagged)
+                    oklink_not_tagged=[]
+                    if ethtective_not_tagged:
+                        bloxy_untagged = bloxy(ethtective_not_tagged,result_collection)
+                        bloxy_not_tagged.append(bloxy_untagged)
                     
-    # print(f"COMPLETE NOT TAGGED:\n{ethtective_not_tagged}")
+    print(f"COMPLETE NOT TAGGED:\n{ethtective_not_tagged}")
 
 if __name__ == "__main__":
     main()
