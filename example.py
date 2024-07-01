@@ -8,6 +8,7 @@ from pymongo import MongoClient
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from tqdm import tqdm 
 
 ok_tag_api = os.getenv("ok_tag_api")
 collection = None
@@ -204,27 +205,28 @@ def bloxy(address,target_collection):
 def main():
     connect_mongodb('ethereum_metadata_update')
     addresses = find_addresses_not_in_second_collection('ethereum_metadata_update_result')
-    ether_not_tagged=[]
-    oklink_not_tagged=[]
-    ethtective_not_tagged=[]
+    ether_not_tagged = []
+    oklink_not_tagged = []
+    ethtective_not_tagged = []
     bloxy_not_tagged = []
-    for address in addresses[0:1000]:
-        not_found_add=etherscan(result_collection,address)
+
+    for address in tqdm(addresses[0:1000], desc="Processing addresses", unit="address"):
+        not_found_add = etherscan(result_collection, address)
         if not_found_add:
-            if len(ether_not_tagged) <20:
+            if len(ether_not_tagged) < 20:
                 ether_not_tagged.append(not_found_add)
             else:
-                tagged,untagged=oklink(result_collection,not_found_add,chain="eth")
-                ether_not_tagged=[]
+                tagged, untagged = oklink(result_collection, not_found_add, chain="eth")
+                ether_not_tagged = []
                 oklink_not_tagged.append(untagged)
                 if oklink_not_tagged:
-                    ethtective_untagged = scrape_ethtective(address,result_collection)
+                    ethtective_untagged = scrape_ethtective(address, result_collection)
                     ethtective_not_tagged.append(ethtective_untagged)
-                    oklink_not_tagged=[]
+                    oklink_not_tagged = []
                     if ethtective_not_tagged:
-                        bloxy_untagged = bloxy(ethtective_not_tagged,result_collection)
+                        bloxy_untagged = bloxy(ethtective_not_tagged, result_collection)
                         bloxy_not_tagged.append(bloxy_untagged)
-                    
+
     print(f"COMPLETE NOT TAGGED:\n{ethtective_not_tagged}")
 
 if __name__ == "__main__":
