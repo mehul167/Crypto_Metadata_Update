@@ -1,4 +1,3 @@
-# temp_mail = geropew265@gawte.com
 import requests
 from datetime import datetime
 import os
