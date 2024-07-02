@@ -209,7 +209,7 @@ def main():
     ethtective_not_tagged = []
     bloxy_not_tagged = []
 
-    for address in tqdm(addresses[0:1000], desc="Processing addresses", unit="address"):
+    for address in tqdm(addresses[0:5000], desc="Processing addresses", unit="address"):
         not_found_add = etherscan(result_collection, address)
         if not_found_add:
             if len(ether_not_tagged) < 20:
